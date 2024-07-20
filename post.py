@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Body, Path, Query
+from fastapi import FastAPI, Body, Path, Query, HTTPException
 from model.post import POSTS, Posts, PostRequest
 
 app = FastAPI()
@@ -18,7 +18,10 @@ async def create_post(payload: PostRequest):
 
 @app.get("/posts/{id}")
 async def get_post_by_id(id: int = Path(gt=0)):
-  return next(filter(lambda el: el.id == id, POSTS), None)
+  post = next(filter(lambda el: el.id == id, POSTS), None)
+  if not post:
+    raise HTTPException(status_code=404, detail='Item Not Found')
+  return post
 
 @app.put("/posts/{id}")
 async def update_post_by_id(id: int, payload: PostRequest):
