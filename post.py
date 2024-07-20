@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Body, Path, Query, HTTPException
 from model.post import POSTS, Posts, PostRequest
+from starlette import status
 
 app = FastAPI()
 
@@ -7,7 +8,7 @@ app = FastAPI()
 async def get_posts(rating: int = Query(gt=0)):
   return POSTS
 
-@app.post("/posts")
+@app.post("/posts", status_code=status.HTTP_201_CREATED)
 async def create_post(payload: PostRequest):
   #old approach with Body
   #POSTS.append(Posts(**payload["id"], payload["title"], payload["content"], payload["author"], payload["rating"]))
