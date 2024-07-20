@@ -1,10 +1,10 @@
-from fastapi import FastAPI, Body, Path
+from fastapi import FastAPI, Body, Path, Query
 from model.post import POSTS, Posts, PostRequest
 
 app = FastAPI()
 
 @app.get("/posts")
-async def get_posts():
+async def get_posts(rating: int = Query(gt=0)):
   return POSTS
 
 @app.post("/posts")
