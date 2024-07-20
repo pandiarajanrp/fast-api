@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Path
 from model.post import POSTS, Posts, PostRequest
 
 app = FastAPI()
@@ -17,7 +17,7 @@ async def create_post(payload: PostRequest):
   return POSTS
 
 @app.get("/posts/{id}")
-async def get_post_by_id(id: int):
+async def get_post_by_id(id: int = Path(gt=0)):
   return next(filter(lambda el: el.id == id, POSTS), None)
 
 @app.put("/posts/{id}")
