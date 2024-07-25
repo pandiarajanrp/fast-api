@@ -1,27 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 from models import Todos
-from database import SessionLocal
-from typing import Annotated
-from sqlalchemy.orm import Session
 from pydantic import BaseModel, Field
-from routers import auth
+from routers import users
+from utils import db_dependency
 
 router = APIRouter()
-
 class TodoRequest(BaseModel):
   title: str
   description: str
   priority: str
   complete: bool
-
-def get_db():
-  db = SessionLocal()
-  try:
-    yield db
-  finally:
-    db.close()
-
-db_dependency = Annotated[Session, Depends(get_db)]
 
 @router.get("/todos")
 def get_todos(db: db_dependency):
