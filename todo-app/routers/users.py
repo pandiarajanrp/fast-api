@@ -63,6 +63,10 @@ async def create_user(db: db_dependency, payload: CreateUserRequest):
   db.commit()
   return user_model
 
+@router.get("/")
+async def get_all_users(db: db_dependency):
+  return db.query(Users).all()
+
 @router.post("/auth", response_model=AuthResponse)
 async def get_auth_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
