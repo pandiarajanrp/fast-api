@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
-from models import Todos
+from ..models import Todos
 from pydantic import BaseModel, Field
-from utils import db_dependency
-from routers.users import auth_dependency
+from ..utils import db_dependency
+from ..routers.users import auth_dependency
 
 router = APIRouter()
 class TodoRequest(BaseModel):
@@ -23,8 +23,8 @@ def get_todo_by_id(db: db_dependency, id: int):
   return todo_result
 
 @router.post("/todos")
-def create_new_todo(user: auth_dependency, db: db_dependency, payload: TodoRequest):
-  todo_model = Todos(**payload.model_dump(), owner_id=user.get('id'))
+def create_new_todo(db: db_dependency, payload: TodoRequest):
+  todo_model = Todos(**payload.model_dump())
   db.add(todo_model)
   db.commit()
 

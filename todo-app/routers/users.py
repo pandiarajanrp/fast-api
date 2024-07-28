@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from utils import db_dependency
-from models import Users
+from ..utils import db_dependency
+from ..models import Users
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from typing import Annotated
 from jose import jwt, JWTError
